@@ -357,7 +357,7 @@ footer a { color: var(--gold-400); text-decoration: none; }
 <div id="root"></div>
 <script type="text/babel">
 
-const API = "http://localhost:8000";
+const API = "https://shs-webapp.onrender.com";
 async function apiPost(path, body) {
   const r = await fetch(`${API}${path}`, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body) });
   const d = await r.json();

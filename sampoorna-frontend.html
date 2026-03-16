@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sampoorna Home Services — Your Urban Relocation Partner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+:root {
+  --navy-950: #050d1a;
+  --navy-900: #0a1628;
+  --navy-800: #0f2040;
+  --navy-700: #162a52;
+  --navy-600: #1e3a6e;
+  --gold-300: #f0cc7a;
+  --gold-400: #e8b84b;
+  --gold-500: #c8922a;
+  --gold-600: #a87320;
+  --gold-glow: rgba(200,146,42,0.25);
+  --white: #ffffff;
+  --white-80: rgba(255,255,255,0.8);
+  --white-60: rgba(255,255,255,0.6);
+  --white-20: rgba(255,255,255,0.08);
+  --white-10: rgba(255,255,255,0.04);
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Outfit', sans-serif;
+  --ease: cubic-bezier(0.4,0,0.2,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--navy-950); color: var(--white); overflow-x: hidden; line-height: 1.6; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--navy-900); }
+::-webkit-scrollbar-thumb { background: var(--gold-500); border-radius: 2px; }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 5vw;
+  transition: all 0.4s var(--ease);
+}
+.nav.scrolled {
+  background: rgba(5,13,26,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(200,146,42,0.12);
+  padding: 0.9rem 5vw;
+}
+.nav-logo { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--gold-400); cursor: pointer; letter-spacing: 0.02em; }
+.nav-logo span { color: var(--white); font-weight: 300; font-style: italic; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a { color: var(--white-60); text-decoration: none; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; position: relative; }
+.nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; right: 100%; height: 1px; background: var(--gold-400); transition: right 0.3s var(--ease); }
+.nav-links a:hover { color: var(--gold-400); }
+.nav-links a:hover::after { right: 0; }
+.nav-cta { background: var(--gold-500); color: var(--navy-950); padding: 0.6rem 1.5rem; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border: none; border-radius: 2px; transition: all 0.2s; font-family: var(--font-body); }
+.nav-cta:hover { background: var(--gold-400); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(200,146,42,0.3); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh; position: relative; overflow: hidden;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; gap: 4rem;
+  padding: 9rem 5vw 5rem;
+}
+.hero-photo {
+  position: absolute; top: 0; right: 0; width: 52%; height: 100%;
+  z-index: 0;
+}
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+.hero-photo::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--navy-950) 0%, rgba(5,13,26,0.7) 50%, rgba(5,13,26,0.2) 100%);
+}
+.hero-photo::before {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(5,13,26,0.4) 0%, transparent 30%, transparent 70%, var(--navy-950) 100%);
+}
+.hero-bg-grid {
+  position: absolute; inset: 0; z-index: 0;
+  background-image: linear-gradient(rgba(200,146,42,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(200,146,42,0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(ellipse 60% 80% at 20% 50%, black 0%, transparent 100%);
+}
+.hero-left { position: relative; z-index: 2; max-width: 620px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(200,146,42,0.1); border: 1px solid rgba(200,146,42,0.3);
+  border-radius: 100px; padding: 0.4rem 1rem;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold-400); margin-bottom: 1.5rem;
+  animation: fadeUp 0.6s var(--ease) both;
+}
+.hero-badge::before { content: '●'; font-size: 0.45rem; }
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 300; line-height: 1.05;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.6s 0.1s var(--ease) both;
+}
+.hero-title em { font-style: italic; color: var(--gold-400); font-weight: 600; }
+.hero-subtitle {
+  font-size: 1.05rem; color: var(--white-60); font-weight: 300;
+  max-width: 480px; line-height: 1.8; margin-bottom: 2.5rem;
+  animation: fadeUp 0.6s 0.2s var(--ease) both;
+}
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s var(--ease) both; }
+.btn-gold { background: var(--gold-500); color: var(--navy-950); padding: 0.9rem 2rem; border: none; border-radius: 2px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.25s; }
+.btn-gold:hover { background: var(--gold-400); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(200,146,42,0.35); }
+.btn-ghost { background: transparent; color: var(--white); padding: 0.9rem 2rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 2px; font-family: var(--font-body); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.25s; }
+.btn-ghost:hover { border-color: var(--gold-400); color: var(--gold-400); transform: translateY(-2px); }
+.hero-trust { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.07); display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.6s 0.4s var(--ease) both; }
+.trust-badge { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 0.5rem 1rem; border-radius: 100px; font-size: 0.75rem; color: var(--white-60); }
+.trust-badge span { font-size: 1rem; }
+
+/* ── STATS COUNTER ── */
+.stats-bar {
+  background: var(--navy-800);
+  border-top: 1px solid rgba(200,146,42,0.1);
+  border-bottom: 1px solid rgba(200,146,42,0.1);
+  padding: 3rem 5vw;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 2rem; text-align: center;
+  position: relative; overflow: hidden;
+}
+.stats-bar::before {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px; height: 200px;
+  background: radial-gradient(ellipse, rgba(200,146,42,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.stat-item { position: relative; }
+.stat-item:not(:last-child)::after {
+  content: ''; position: absolute; right: 0; top: 20%; height: 60%; width: 1px;
+  background: linear-gradient(transparent, rgba(200,146,42,0.2), transparent);
+}
+.stat-number { font-family: var(--font-display); font-size: 3rem; font-weight: 600; color: var(--gold-400); line-height: 1; }
+.stat-suffix { font-family: var(--font-display); font-size: 2rem; color: var(--gold-400); }
+.stat-label { font-size: 0.75rem; color: var(--white-60); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 0.4rem; }
+
+/* ── SECTION BASE ── */
+section { padding: 7rem 5vw; }
+.tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-400); margin-bottom: 0.75rem; }
+.sec-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.15; }
+.sec-title em { font-style: italic; color: var(--gold-400); font-weight: 600; }
+.sec-sub { color: var(--white-60); font-size: 0.95rem; font-weight: 300; max-width: 520px; line-height: 1.8; margin-top: 0.75rem; }
+
+/* ── PHOTO SERVICES ── */
+#services { background: var(--navy-900); }
+.services-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; margin-bottom: 5rem; }
+.services-photo { position: relative; border-radius: 2px; overflow: hidden; }
+.services-photo img { width: 100%; height: 420px; object-fit: cover; display: block; border-radius: 2px; }
+.services-photo-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(5,13,26,0.9));
+  padding: 2rem;
+}
+.services-photo-tag { color: var(--gold-400); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; }
+.services-photo-text { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; margin-top: 0.25rem; }
+.services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(200,146,42,0.06); }
+.service-card { background: var(--navy-900); padding: 2.5rem 2rem; position: relative; overflow: hidden; transition: background 0.3s; }
+.service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold-500), transparent); opacity: 0; transition: opacity 0.3s; }
+.service-card:hover { background: rgba(22,42,82,0.8); }
+.service-card:hover::before { opacity: 1; }
+.service-img { width: 100%; height: 140px; object-fit: cover; margin-bottom: 1.5rem; border-radius: 2px; filter: brightness(0.8); transition: filter 0.3s; }
+.service-card:hover .service-img { filter: brightness(1); }
+.service-name { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; margin-bottom: 0.6rem; }
+.service-desc { color: var(--white-60); font-size: 0.85rem; line-height: 1.7; font-weight: 300; }
+.service-chip { margin-top: 1.2rem; display: inline-block; background: rgba(200,146,42,0.1); border: 1px solid rgba(200,146,42,0.25); color: var(--gold-400); font-size: 0.68rem; padding: 0.25rem 0.75rem; border-radius: 100px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ── INFOGRAPHIC HOW IT WORKS ── */
+#how-it-works { background: var(--navy-950); position: relative; overflow: hidden; }
+#how-it-works::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 700px; height: 700px; background: radial-gradient(circle, rgba(200,146,42,0.04) 0%, transparent 70%); pointer-events: none; }
+.hiw-header { text-align: center; margin-bottom: 5rem; }
+.hiw-header .sec-sub { margin: 0.75rem auto 0; }
+.infographic { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+.infographic-line {
+  position: absolute; top: 80px; left: calc(12.5% + 30px); right: calc(12.5% + 30px); height: 2px;
+  background: linear-gradient(90deg, var(--gold-500) 0%, var(--gold-400) 50%, var(--gold-500) 100%);
+  z-index: 0;
+}
+.infographic-line::before, .infographic-line::after {
+  content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+  width: 8px; height: 8px; background: var(--gold-400); border-radius: 50%;
+}
+.infographic-line::before { left: 0; }
+.infographic-line::after { right: 0; }
+.step-card { text-align: center; padding: 0 1.5rem 2rem; position: relative; z-index: 1; }
+.step-circle {
+  width: 80px; height: 80px; margin: 0 auto 2rem;
+  border-radius: 50%; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  background: var(--navy-800);
+  border: 2px solid var(--gold-500);
+  box-shadow: 0 0 0 6px rgba(200,146,42,0.08), 0 0 30px rgba(200,146,42,0.15);
+  transition: all 0.4s var(--ease-spring);
+}
+.step-circle:hover { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(200,146,42,0.1), 0 0 50px rgba(200,146,42,0.25); }
+.step-num-badge {
+  position: absolute; top: -4px; right: -4px;
+  width: 22px; height: 22px; background: var(--gold-500);
+  border-radius: 50%; color: var(--navy-950);
+  font-size: 0.65rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-title { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin-bottom: 0.6rem; }
+.step-desc { color: var(--white-60); font-size: 0.85rem; line-height: 1.7; font-weight: 300; }
+.step-detail { margin-top: 1rem; padding: 0.75rem; background: rgba(200,146,42,0.05); border: 1px solid rgba(200,146,42,0.1); font-size: 0.78rem; color: var(--gold-300); }
+.hiw-bottom { margin-top: 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+.hiw-photo { position: relative; border-radius: 2px; overflow: hidden; }
+.hiw-photo img { width: 100%; height: 360px; object-fit: cover; display: block; filter: brightness(0.75); }
+.hiw-photo-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(5,13,26,0.6) 0%, transparent 60%); padding: 2.5rem; display: flex; flex-direction: column; justify-content: flex-end; }
+.hiw-bullets { display: flex; flex-direction: column; gap: 1rem; }
+.hiw-bullet { display: flex; align-items: flex-start; gap: 1rem; }
+.hiw-bullet-icon { width: 2.5rem; height: 2.5rem; flex-shrink: 0; border: 1px solid rgba(200,146,42,0.3); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.hiw-bullet-text strong { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.2rem; }
+.hiw-bullet-text span { color: var(--white-60); font-size: 0.82rem; font-weight: 300; }
+
+/* ── VIDEO SECTION ── */
+#demo { background: var(--navy-800); position: relative; overflow: hidden; }
+#demo::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(200,146,42,0.04) 0%, transparent 50%); pointer-events: none; }
+.demo-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 6rem; align-items: center; }
+.demo-text .sec-sub { max-width: 440px; }
+.demo-benefits { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.demo-benefit { display: flex; gap: 1rem; align-items: flex-start; }
+.demo-benefit-dot { width: 6px; height: 6px; background: var(--gold-400); border-radius: 50%; flex-shrink: 0; margin-top: 0.55rem; }
+.demo-benefit p { font-size: 0.9rem; color: var(--white-60); font-weight: 300; line-height: 1.5; }
+.demo-benefit p strong { color: var(--white); font-weight: 500; }
+.video-container { position: relative; border-radius: 4px; overflow: hidden; background: var(--navy-950); border: 1px solid rgba(200,146,42,0.15); box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,146,42,0.08); }
+.video-container::before { content: ''; display: block; padding-top: 56.25%; }
+.video-container iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+.video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; cursor: pointer; transition: background 0.3s; }
+.video-placeholder:hover { background: rgba(200,146,42,0.05); }
+.play-btn { width: 70px; height: 70px; background: var(--gold-500); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; padding-left: 4px; box-shadow: 0 0 0 12px rgba(200,146,42,0.15); transition: all 0.3s var(--ease-spring); }
+.video-placeholder:hover .play-btn { transform: scale(1.1); box-shadow: 0 0 0 18px rgba(200,146,42,0.1); }
+.play-label { font-size: 0.8rem; color: var(--white-60); letter-spacing: 0.1em; text-transform: uppercase; }
+.video-caption { margin-top: 1rem; font-size: 0.78rem; color: var(--white-60); text-align: center; letter-spacing: 0.05em; }
+.video-badge { position: absolute; top: 1rem; left: 1rem; background: rgba(5,13,26,0.85); border: 1px solid rgba(200,146,42,0.3); padding: 0.4rem 0.8rem; font-size: 0.7rem; color: var(--gold-400); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; z-index: 2; border-radius: 2px; }
+
+/* ── PRICING ── */
+#pricing { background: var(--navy-900); }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 4rem; }
+.price-card { border: 1px solid rgba(255,255,255,0.07); padding: 2.5rem; position: relative; transition: transform 0.3s var(--ease), box-shadow 0.3s; background: var(--navy-950); }
+.price-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+.price-card.featured { border-color: var(--gold-500); background: linear-gradient(160deg, rgba(200,146,42,0.07) 0%, var(--navy-950) 60%); }
+.price-card.featured::before { content: 'MOST POPULAR'; position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--gold-500); color: var(--navy-950); font-size: 0.62rem; font-weight: 800; letter-spacing: 0.18em; padding: 0.25rem 1.2rem; }
+.plan-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gold-400); font-weight: 600; }
+.plan-name { font-family: var(--font-display); font-size: 1.8rem; font-weight: 300; margin: 0.3rem 0 0.15rem; }
+.plan-sub { color: var(--white-60); font-size: 0.8rem; }
+.plan-price { margin: 1.5rem 0; display: flex; align-items: baseline; gap: 0.25rem; }
+.p-cur { color: var(--gold-400); font-size: 1.2rem; }
+.p-amt { font-family: var(--font-display); font-size: 3rem; font-weight: 600; line-height: 1; }
+.p-per { color: var(--white-60); font-size: 0.8rem; }
+.plan-hr { height: 1px; background: rgba(255,255,255,0.07); margin: 1.5rem 0; }
+.plan-list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+.plan-list li { display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.85rem; color: var(--white-60); line-height: 1.4; }
+.plan-list li .ck { color: var(--gold-400); flex-shrink: 0; margin-top: 0.05rem; font-size: 0.9rem; }
+.plan-cta { margin-top: 2rem; width: 100%; padding: 0.9rem; font-family: var(--font-body); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: all 0.25s; }
+.plan-cta.g { background: var(--gold-500); color: var(--navy-950); border: none; }
+.plan-cta.g:hover { background: var(--gold-400); box-shadow: 0 8px 24px rgba(200,146,42,0.35); }
+.plan-cta.o { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.18); }
+.plan-cta.o:hover { border-color: var(--gold-400); color: var(--gold-400); }
+
+/* ── TESTIMONIALS ── */
+#testimonials { background: var(--navy-950); }
+.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 4rem; }
+.testi-card { background: var(--navy-900); border: 1px solid rgba(255,255,255,0.06); padding: 2rem; position: relative; }
+.testi-card::before { content: '"'; position: absolute; top: 1rem; right: 1.5rem; font-family: var(--font-display); font-size: 4rem; color: rgba(200,146,42,0.15); line-height: 1; }
+.testi-stars { color: var(--gold-400); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
+.testi-text { font-size: 0.9rem; color: var(--white-80); line-height: 1.75; font-weight: 300; margin-bottom: 1.5rem; }
+.testi-avatar { display: flex; align-items: center; gap: 0.75rem; }
+.testi-avatar img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(200,146,42,0.3); }
+.testi-name { font-weight: 600; font-size: 0.875rem; }
+.testi-role { color: var(--white-60); font-size: 0.75rem; }
+
+/* ── CONTACT ── */
+#contact { background: var(--navy-900); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 6rem; align-items: start; }
+.contact-visual { position: sticky; top: 7rem; }
+.contact-visual img { width: 100%; height: 320px; object-fit: cover; border-radius: 2px; filter: brightness(0.7); }
+.contact-visual-info { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+.c-info { display: flex; gap: 1rem; align-items: center; }
+.c-icon { width: 2.5rem; height: 2.5rem; flex-shrink: 0; border: 1px solid rgba(200,146,42,0.3); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.c-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold-400); font-weight: 600; }
+.c-value { font-size: 0.85rem; color: var(--white-60); font-weight: 300; }
+.form-tabs { display: flex; margin-bottom: 2rem; }
+.ftab { flex: 1; padding: 0.8rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); color: var(--white-60); font-family: var(--font-body); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+.ftab.active { background: var(--gold-500); color: var(--navy-950); border-color: var(--gold-500); }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.fg { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+.fg label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--white-60); font-weight: 500; }
+.fg input, .fg select, .fg textarea { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 2px; padding: 0.8rem 1rem; color: var(--white); font-family: var(--font-body); font-size: 0.875rem; font-weight: 300; outline: none; transition: border-color 0.2s; width: 100%; }
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--gold-500); background: rgba(200,146,42,0.03); }
+.fg select option { background: var(--navy-800); }
+.fg textarea { resize: vertical; min-height: 100px; }
+.fsub { width: 100%; padding: 1rem; background: var(--gold-500); color: var(--navy-950); font-family: var(--font-body); font-size: 0.875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; border-radius: 2px; transition: all 0.25s; margin-top: 0.5rem; }
+.fsub:hover { background: var(--gold-400); box-shadow: 0 8px 24px rgba(200,146,42,0.3); }
+.fsub:disabled { opacity: 0.5; cursor: not-allowed; }
+.ferr { color: #ff6b7a; font-size: 0.8rem; text-align: center; margin-top: 0.5rem; }
+.fsuccess { padding: 2.5rem; text-align: center; border: 1px solid rgba(200,146,42,0.25); background: rgba(200,146,42,0.04); }
+.fsuccess h4 { font-family: var(--font-display); font-size: 1.6rem; color: var(--gold-400); margin-bottom: 0.5rem; }
+.fsuccess p { color: var(--white-60); font-size: 0.9rem; }
+
+/* ── NEWSLETTER ── */
+.nl-strip { background: linear-gradient(135deg, var(--navy-700) 0%, var(--navy-800) 100%); border: 1px solid rgba(200,146,42,0.15); padding: 2.5rem; display: flex; align-items: center; gap: 3rem; margin-bottom: 4rem; flex-wrap: wrap; }
+.nl-text h4 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; }
+.nl-text p { color: var(--white-60); font-size: 0.85rem; margin-top: 0.2rem; }
+.nl-form { display: flex; flex: 1; min-width: 280px; }
+.nl-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-right: none; padding: 0.75rem 1rem; color: var(--white); font-family: var(--font-body); font-size: 0.875rem; outline: none; }
+.nl-input:focus { border-color: var(--gold-500); }
+.nl-btn { background: var(--gold-500); color: var(--navy-950); padding: 0.75rem 1.5rem; border: none; font-family: var(--font-body); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+.nl-btn:hover { background: var(--gold-400); }
+
+/* ── FOOTER ── */
+footer { background: var(--navy-950); border-top: 1px solid rgba(200,146,42,0.1); padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: rgba(255,255,255,0.35); }
+footer a { color: var(--gold-400); text-decoration: none; }
+.footer-logo { font-family: var(--font-display); font-size: 1.2rem; color: var(--gold-400); }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; background: var(--navy-700); border: 1px solid rgba(200,146,42,0.3); border-left: 3px solid var(--gold-500); padding: 1rem 1.5rem; max-width: 340px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: slideIn 0.3s var(--ease); cursor: pointer; }
+.toast strong { display: block; color: var(--gold-400); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2rem; }
+.toast span { font-size: 0.875rem; color: var(--white-80); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes countUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-photo { width: 100%; opacity: 0.3; }
+  .services-intro, .hiw-bottom, .demo-inner, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .services-grid, .pricing-grid, .testi-grid { grid-template-columns: 1fr 1fr; }
+  .infographic { grid-template-columns: 1fr 1fr; }
+  .infographic-line { display: none; }
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { display: none; }
+}
+@media (max-width: 600px) {
+  .services-grid, .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .frow { grid-template-columns: 1fr; }
+  section { padding: 5rem 5vw; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+const API = "http://localhost:8000";
+async function apiPost(path, body) {
+  const r = await fetch(`${API}${path}`, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body) });
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.detail || "Something went wrong");
+  return d;
+}
+
+/* ── Animated Counter ── */
+function Counter({ target, suffix = "", prefix = "" }) {
+  const [val, setVal] = React.useState(0);
+  const ref = React.useRef();
+  React.useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        let start = 0;
+        const end = parseInt(target.toString().replace(/\D/g,""));
+        const dur = 1800;
+        const step = end / (dur / 16);
+        const t = setInterval(() => {
+          start += step;
+          if (start >= end) { setVal(end); clearInterval(t); }
+          else setVal(Math.floor(start));
+        }, 16);
+        obs.disconnect();
+      }
+    }, { threshold: 0.3 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [target]);
+  return <span ref={ref}>{prefix}{val.toLocaleString()}{suffix}</span>;
+}
+
+/* ── Toast ── */
+function Toast({ title, msg, onClose }) {
+  React.useEffect(() => { const t = setTimeout(onClose, 5000); return () => clearTimeout(t); }, []);
+  return <div className="toast" onClick={onClose}><strong>{title}</strong><span>{msg}</span></div>;
+}
+
+/* ── Nav ── */
+function Nav({ onBook }) {
+  const [sc, setSc] = React.useState(false);
+  React.useEffect(() => {
+    const h = () => setSc(window.scrollY > 50);
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+  const go = id => document.getElementById(id)?.scrollIntoView({ behavior:"smooth" });
+  return (
+    <nav className={`nav ${sc ? "scrolled" : ""}`}>
+      <div className="nav-logo" onClick={() => go("hero")}>Sampoorna<span> Home</span></div>
+      <ul className="nav-links">
+        {[["services","Services"],["how-it-works","How It Works"],["demo","Demo"],["pricing","Pricing"],["contact","Contact"]].map(([id,l]) => (
+          <li key={id}><a href={`#${id}`} onClick={e => { e.preventDefault(); go(id); }}>{l}</a></li>
+        ))}
+      </ul>
+      <button className="nav-cta" onClick={onBook}>Book Now</button>
+    </nav>
+  );
+}
+
+/* ── Hero ── */
+function Hero({ onBook }) {
+  const go = id => document.getElementById(id)?.scrollIntoView({ behavior:"smooth" });
+  return (
+    <section className="hero" id="hero">
+      <div className="hero-bg-grid" />
+      <div className="hero-photo">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80&auto=format&fit=crop" alt="Happy family moving into new home" />
+      </div>
+      <div className="hero-left">
+        <div className="hero-badge">India's #1 Urban Relocation Platform</div>
+        <h1 className="hero-title">Your Move,<br /><em>Perfectly</em><br />Coordinated.</h1>
+        <p className="hero-subtitle">
+          One platform. Verified vendors. Fixed pricing. We handle moving, repairs, cleaning, and maintenance so you settle in without the stress.
+        </p>
+        <div className="hero-actions">
+          <button className="btn-gold" onClick={onBook}>Book Your Move ›</button>
+          <button className="btn-ghost" onClick={() => go("demo")}>▶ Watch Demo</button>
+        </div>
+        <div className="hero-trust">
+          {[["✅","Verified Vendors"],["💰","Fixed Pricing"],["📍","5 Metro Cities"],["⚡","2-Hr Response"]].map(([ic,l]) => (
+            <div className="trust-badge" key={l}><span>{ic}</span>{l}</div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Stats Bar ── */
+function StatsBar() {
+  return (
+    <div className="stats-bar">
+      {[
+        { n: 1200, suf: "+", label: "Relocations Completed" },
+        { n: 98,   suf: "%", label: "Customer Satisfaction" },
+        { n: 500,  suf: "+", label: "Verified Vendors" },
+        { n: 5,    suf: " Cities", label: "Metro Coverage" },
+      ].map(s => (
+        <div className="stat-item fade-in" key={s.label}>
+          <div className="stat-number"><Counter target={s.n} suffix={s.suf} /></div>
+          <div className="stat-label">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Services ── */
+const SERVICES = [
+  { img: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&q=70&auto=format&fit=crop", name: "Moving & Packing", desc: "End-to-end packing, transport & unpacking by trained professionals.", chip: "Most Booked" },
+  { img: "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=70&auto=format&fit=crop", name: "Repairs & Handyman", desc: "Electricians, plumbers & carpenters to get your home move-in ready.", chip: "Same-Day" },
+  { img: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=70&auto=format&fit=crop", name: "Deep Cleaning", desc: "Certified cleaning teams for move-in and move-out cleans.", chip: "Popular" },
+  { img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=70&auto=format&fit=crop", name: "Home Maintenance", desc: "Appliance servicing, painting, pest control — ongoing home care.", chip: "Subscription" },
+];
+
+function Services() {
+  return (
+    <section id="services">
+      <div className="services-intro">
+        <div className="fade-in">
+          <span className="tag">What We Offer</span>
+          <h2 className="sec-title">All Your Home Services,<br /><em>One Platform</em></h2>
+          <p className="sec-sub">Stop juggling multiple vendors. Sampoorna coordinates everything with verified professionals at transparent, fixed prices.</p>
+          <div style={{ marginTop: "2rem", display:"flex", gap:"1rem", flexWrap:"wrap" }}>
+            {["No hidden costs","Background-checked vendors","One point of contact","Real-time tracking"].map(t => (
+              <span key={t} style={{ fontSize:"0.78rem", color:"var(--gold-400)", background:"rgba(200,146,42,0.08)", border:"1px solid rgba(200,146,42,0.2)", padding:"0.3rem 0.8rem", borderRadius:"100px" }}>✓ {t}</span>
+            ))}
+          </div>
+        </div>
+        <div className="services-photo fade-in">
+          <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=700&q=80&auto=format&fit=crop" alt="Happy couple in their new home" />
+          <div className="services-photo-overlay">
+            <div className="services-photo-tag">Customer Story</div>
+            <div className="services-photo-text">"Moved in 3 days — completely stress-free"</div>
+          </div>
+        </div>
+      </div>
+      <div className="services-grid">
+        {SERVICES.map(s => (
+          <div className="service-card fade-in" key={s.name}>
+            <img className="service-img" src={s.img} alt={s.name} loading="lazy" />
+            <h3 className="service-name">{s.name}</h3>
+            <p className="service-desc">{s.desc}</p>
+            <span className="service-chip">{s.chip}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ── How It Works (Infographic) ── */
+const STEPS = [
+  { n:"01", icon:"📋", title:"Choose Bundle", desc:"Pick the services you need — moving, repairs, cleaning, or the complete relocation package.", detail:"Takes ~2 minutes" },
+  { n:"02", icon:"📅", title:"Pick a Date", desc:"Select your preferred date and time slot. We confirm availability within 2 hours.", detail:"Instant booking" },
+  { n:"03", icon:"⚙️", title:"We Coordinate", desc:"Our platform sequences verified vendors so everything happens in the right order.", detail:"Zero vendor juggling" },
+  { n:"04", icon:"🏡", title:"Settle In", desc:"Move into your home stress-free. Rate vendors and track everything from one dashboard.", detail:"100% satisfaction" },
+];
+
+function HowItWorks() {
+  return (
+    <section id="how-it-works">
+      <div className="hiw-header">
+        <span className="tag">The Process</span>
+        <h2 className="sec-title">Relocation in <em>4 Simple Steps</em></h2>
+        <p className="sec-sub">We've removed every friction point from the urban relocation experience.</p>
+      </div>
+      <div className="infographic">
+        <div className="infographic-line" />
+        {STEPS.map(s => (
+          <div className="step-card fade-in" key={s.n}>
+            <div className="step-circle">
+              {s.icon}
+              <div className="step-num-badge">{s.n}</div>
+            </div>
+            <h3 className="step-title">{s.title}</h3>
+            <p className="step-desc">{s.desc}</p>
+            <div className="step-detail">⚡ {s.detail}</div>
+          </div>
+        ))}
+      </div>
+      <div className="hiw-bottom">
+        <div className="hiw-photo fade-in">
+          <img src="https://images.unsplash.com/photo-1603796846097-bee99e4a601f?w=700&q=80&auto=format&fit=crop" alt="Movers working professionally" />
+          <div className="hiw-photo-overlay">
+            <span className="tag">Why Choose Us</span>
+            <h3 style={{ fontFamily:"var(--font-display)", fontSize:"1.6rem", fontWeight:300, marginTop:"0.3rem" }}>Trusted by <em style={{ color:"var(--gold-400)" }}>1,200+</em> families</h3>
+          </div>
+        </div>
+        <div className="hiw-bullets fade-in">
+          {[
+            { icon:"🔐", t:"Verified & Background Checked", d:"Every vendor on our platform goes through identity verification and quality screening before onboarding." },
+            { icon:"💳", t:"Fixed, Transparent Pricing", d:"What you see is what you pay. Zero hidden charges, zero surprises on moving day." },
+            { icon:"📱", t:"Real-Time Tracking", d:"Track your move, vendors, and service progress live from your phone or browser." },
+            { icon:"🌟", t:"Post-Move Support", d:"Rated 4.8/5 by customers. Our team is available 7 days a week to resolve any issues." },
+          ].map(b => (
+            <div className="hiw-bullet" key={b.t}>
+              <div className="hiw-bullet-icon">{b.icon}</div>
+              <div className="hiw-bullet-text"><strong>{b.t}</strong><span>{b.d}</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Video Demo ── */
+function Demo() {
+  const [playing, setPlaying] = React.useState(false);
+  // Replace VIDEO_ID with your actual YouTube video ID
+  const VIDEO_ID = "dQw4w9WgXcQ";
+  return (
+    <section id="demo">
+      <div className="demo-inner">
+        <div className="demo-text fade-in">
+          <span className="tag">See It In Action</span>
+          <h2 className="sec-title">Watch How <em>Sampoorna</em> Works</h2>
+          <p className="sec-sub">From booking to settling in — see the entire relocation journey in under 3 minutes.</p>
+          <div className="demo-benefits">
+            {[
+              ["Simple booking flow", "Book your entire move in under 2 minutes from any device."],
+              ["Live vendor dashboard", "Track all your vendors, timings, and tasks in real time."],
+              ["Instant cost estimate", "Get a transparent price breakdown before confirming."],
+              ["Post-move checklist", "A smart digital checklist ensures nothing is missed."],
+            ].map(([t,d]) => (
+              <div className="demo-benefit" key={t}>
+                <div className="demo-benefit-dot" />
+                <p><strong>{t}</strong> — {d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="fade-in">
+          <div className="video-container">
+            <div className="video-badge">▶ PRODUCT DEMO</div>
+            {playing ? (
+              <iframe
+                src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1`}
+                title="Sampoorna Home Services Demo"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <>
+                <img
+                  src={`https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`}
+                  alt="Video thumbnail"
+                  style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", opacity:0.5 }}
+                  onError={e => { e.target.src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80&auto=format&fit=crop"; }}
+                />
+                <div className="video-placeholder" onClick={() => setPlaying(true)}>
+                  <div className="play-btn">▶</div>
+                  <div className="play-label">Play Demo Video</div>
+                </div>
+              </>
+            )}
+          </div>
+          <p className="video-caption">📌 Replace the YouTube video ID in the code with your actual demo video</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Pricing ── */
+const PLANS = [
+  { lbl:"Starter", name:"Essential Move", sub:"Individuals & students", price:"5,000",
+    features:["Packing & transport (1 BHK)","Basic home cleaning","1 handyman visit (2 hrs)","Real-time tracking","Customer support"], cta:"o" },
+  { lbl:"Best Value", name:"Complete Relocation", sub:"Families & professionals", price:"12,000", featured:true,
+    features:["Packing & transport (up to 3 BHK)","Deep cleaning — both homes","3 handyman visits","Appliance installation","Priority 24/7 support","Digital relocation checklist","Real-time dashboard"], cta:"g" },
+  { lbl:"Premium", name:"Concierge Package", sub:"Corporate & premium clients", price:"25,000",
+    features:["Unlimited size transport","Full deep-clean both ends","Dedicated move coordinator","Appliance + furniture setup","Pest control included","3-month maintenance plan","AI scheduling & live tracking"], cta:"o" },
+];
+
+function Pricing({ onBook }) {
+  return (
+    <section id="pricing">
+      <div className="fade-in" style={{ marginBottom:"1rem" }}>
+        <span className="tag">Transparent Pricing</span>
+        <h2 className="sec-title">Fixed Rates, <em>No Surprises</em></h2>
+        <p className="sec-sub">Every package includes verified vendors, coordination, and tracking. Pick what fits your move.</p>
+      </div>
+      <div className="pricing-grid">
+        {PLANS.map(p => (
+          <div className={`price-card fade-in ${p.featured ? "featured" : ""}`} key={p.name}>
+            <div className="plan-label">{p.lbl}</div>
+            <div className="plan-name">{p.name}</div>
+            <div className="plan-sub">{p.sub}</div>
+            <div className="plan-price"><span className="p-cur">₹</span><span className="p-amt">{p.price}</span><span className="p-per"> / booking</span></div>
+            <div className="plan-hr" />
+            <ul className="plan-list">
+              {p.features.map(f => <li key={f}><span className="ck">◆</span>{f}</li>)}
+            </ul>
+            <button className={`plan-cta ${p.cta}`} onClick={onBook}>Get Started</button>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ── Testimonials ── */
+const TESTIS = [
+  { stars:"★★★★★", text:"Booked the Complete Relocation package for my move from Hyderabad to Bengaluru. Every vendor showed up on time, the apartment was spotless, and the tracking dashboard was brilliant.", name:"Priya Sharma", role:"Software Engineer, Bengaluru", img:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80&auto=format&fit=crop&face" },
+  { stars:"★★★★★", text:"As a working professional, I had zero time to manage vendors. Sampoorna handled everything in one booking. My 3 BHK was move-in ready in a single day. Absolutely magical.", name:"Arjun Reddy", role:"Product Manager, Hyderabad", img:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80&auto=format&fit=crop&face" },
+  { stars:"★★★★☆", text:"The fixed pricing was a relief — no negotiation, no surprises. The cleaning team did an incredible job. Will definitely use Sampoorna again for my next move.", name:"Meena Krishnan", role:"Teacher, Chennai", img:"https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=100&q=80&auto=format&fit=crop&face" },
+];
+
+function Testimonials() {
+  return (
+    <section id="testimonials">
+      <div className="fade-in">
+        <span className="tag">Customer Stories</span>
+        <h2 className="sec-title">Trusted by <em>Families</em> Across India</h2>
+        <p className="sec-sub">Don't take our word for it — here's what real customers say about their Sampoorna experience.</p>
+      </div>
+      <div className="testi-grid">
+        {TESTIS.map(t => (
+          <div className="testi-card fade-in" key={t.name}>
+            <div className="testi-stars">{t.stars}</div>
+            <p className="testi-text">{t.text}</p>
+            <div className="testi-avatar">
+              <img src={t.img} alt={t.name} onError={e => e.target.style.display="none"} />
+              <div><div className="testi-name">{t.name}</div><div className="testi-role">{t.role}</div></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ── Contact ── */
+function Contact({ defaultTab, setToast }) {
+  const [tab, setTab] = React.useState(defaultTab || "booking");
+  const [status, setStatus] = React.useState("idle");
+  const [error, setError] = React.useState("");
+  const [nlEmail, setNlEmail] = React.useState("");
+  const [booking, setBooking] = React.useState({ name:"", email:"", phone:"", service_type:"", preferred_date:"", city:"", notes:"" });
+  const [contact, setContact] = React.useState({ name:"", email:"", phone:"", message:"" });
+
+  React.useEffect(() => { if (defaultTab) setTab(defaultTab); }, [defaultTab]);
+
+  const handleBooking = async e => {
+    e.preventDefault(); setError(""); setStatus("loading");
+    try { const r = await apiPost("/api/booking", booking); setStatus("success"); setToast({ title:"Booking Received!", msg:r.message }); }
+    catch(err) { setError(err.message); setStatus("idle"); }
+  };
+  const handleContact = async e => {
+    e.preventDefault(); setError(""); setStatus("loading");
+    try { const r = await apiPost("/api/contact", contact); setStatus("success"); setToast({ title:"Message Sent!", msg:r.message }); }
+    catch(err) { setError(err.message); setStatus("idle"); }
+  };
+  const handleNl = async e => {
+    e.preventDefault();
+    try { const r = await apiPost("/api/newsletter", { email:nlEmail }); setNlEmail(""); setToast({ title:"Subscribed!", msg:r.message }); }
+    catch(err) { setToast({ title:"Oops", msg:err.message }); }
+  };
+
+  return (
+    <section id="contact">
+      <div className="nl-strip fade-in">
+        <div className="nl-text"><h4>Stay in the Loop 📬</h4><p>Relocation tips, city guides & exclusive deals — monthly newsletter.</p></div>
+        <form className="nl-form" onSubmit={handleNl}>
+          <input className="nl-input" type="email" placeholder="your@email.com" value={nlEmail} onChange={e => setNlEmail(e.target.value)} required />
+          <button className="nl-btn" type="submit">Subscribe</button>
+        </form>
+      </div>
+      <div className="contact-grid">
+        <div className="contact-visual fade-in">
+          <img src="https://images.unsplash.com/photo-1448630360428-65456885c650?w=600&q=80&auto=format&fit=crop" alt="Moving boxes in new home" />
+          <div className="contact-visual-info">
+            {[["📍","Coverage","Hyderabad · Bengaluru · Chennai · Mumbai · Delhi"],["📞","Phone","+91 98765 43210"],["✉️","Email","hello@sampoorna.in"],["🕐","Hours","Mon–Sat, 8 AM – 8 PM"]].map(([ic,l,v]) => (
+              <div className="c-info" key={l}>
+                <div className="c-icon">{ic}</div>
+                <div><div className="c-label">{l}</div><div className="c-value">{v}</div></div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="fade-in">
+          <span className="tag">Get In Touch</span>
+          <h2 className="sec-title" style={{ marginBottom:"2rem" }}>Ready for an <em>effortless</em> move?</h2>
+          <div className="form-tabs">
+            {[["booking","📅 Book a Service"],["contact","✉️ Send Message"]].map(([k,l]) => (
+              <button key={k} className={`ftab ${tab===k?"active":""}`} onClick={() => { setTab(k); setStatus("idle"); setError(""); }}>{l}</button>
+            ))}
+          </div>
+          {status === "success" ? (
+            <div className="fsuccess">
+              <h4>✦ All Done!</h4>
+              <p>Your request was received. We'll follow up within 2 hours.</p>
+              <button className="plan-cta o" style={{ width:"auto", padding:"0.6rem 1.5rem", marginTop:"1.5rem" }} onClick={() => setStatus("idle")}>Submit Another</button>
+            </div>
+          ) : tab === "booking" ? (
+            <form onSubmit={handleBooking}>
+              <div className="frow">
+                <div className="fg"><label>Full Name</label><input type="text" placeholder="Your name" required value={booking.name} onChange={e => setBooking({...booking,name:e.target.value})} /></div>
+                <div className="fg"><label>Phone</label><input type="tel" placeholder="+91 XXXXX XXXXX" required value={booking.phone} onChange={e => setBooking({...booking,phone:e.target.value})} /></div>
+              </div>
+              <div className="fg"><label>Email</label><input type="email" placeholder="you@email.com" required value={booking.email} onChange={e => setBooking({...booking,email:e.target.value})} /></div>
+              <div className="frow">
+                <div className="fg"><label>Service Type</label>
+                  <select required value={booking.service_type} onChange={e => setBooking({...booking,service_type:e.target.value})}>
+                    <option value="">Select…</option>
+                    <option value="moving">Moving & Packing</option>
+                    <option value="repairs">Repairs & Handyman</option>
+                    <option value="cleaning">Deep Cleaning</option>
+                    <option value="maintenance">Home Maintenance</option>
+                    <option value="full-relocation">Full Relocation Bundle</option>
+                  </select>
+                </div>
+                <div className="fg"><label>City</label>
+                  <select required value={booking.city} onChange={e => setBooking({...booking,city:e.target.value})}>
+                    <option value="">Select…</option>
+                    {["Hyderabad","Bengaluru","Chennai","Mumbai","Delhi"].map(c => <option key={c}>{c}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div className="fg"><label>Preferred Date</label><input type="date" required min={new Date().toISOString().split("T")[0]} value={booking.preferred_date} onChange={e => setBooking({...booking,preferred_date:e.target.value})} /></div>
+              <div className="fg"><label>Notes (optional)</label><textarea placeholder="Floor number, special items, requirements…" value={booking.notes} onChange={e => setBooking({...booking,notes:e.target.value})} /></div>
+              {error && <div className="ferr">{error}</div>}
+              <button className="fsub" type="submit" disabled={status==="loading"}>{status==="loading" ? "Submitting…" : "Confirm Booking Enquiry ›"}</button>
+            </form>
+          ) : (
+            <form onSubmit={handleContact}>
+              <div className="frow">
+                <div className="fg"><label>Name</label><input type="text" placeholder="Your name" required value={contact.name} onChange={e => setContact({...contact,name:e.target.value})} /></div>
+                <div className="fg"><label>Phone (optional)</label><input type="tel" placeholder="+91 XXXXX XXXXX" value={contact.phone} onChange={e => setContact({...contact,phone:e.target.value})} /></div>
+              </div>
+              <div className="fg"><label>Email</label><input type="email" placeholder="you@email.com" required value={contact.email} onChange={e => setContact({...contact,email:e.target.value})} /></div>
+              <div className="fg"><label>Message</label><textarea placeholder="How can we help you?" required rows={5} value={contact.message} onChange={e => setContact({...contact,message:e.target.value})} /></div>
+              {error && <div className="ferr">{error}</div>}
+              <button className="fsub" type="submit" disabled={status==="loading"}>{status==="loading" ? "Sending…" : "Send Message ›"}</button>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── App ── */
+function App() {
+  const [toast, setToast] = React.useState(null);
+  const [contactTab, setContactTab] = React.useState("booking");
+  const book = () => { setContactTab("booking"); setTimeout(() => document.getElementById("contact")?.scrollIntoView({ behavior:"smooth" }), 50); };
+
+  React.useEffect(() => {
+    const els = document.querySelectorAll(".fade-in");
+    const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); }), { threshold: 0.08 });
+    els.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <>
+      <Nav onBook={book} />
+      <Hero onBook={book} />
+      <StatsBar />
+      <Services />
+      <HowItWorks />
+      <Demo />
+      <Pricing onBook={book} />
+      <Testimonials />
+      <Contact defaultTab={contactTab} setToast={setToast} />
+      <footer>
+        <div className="footer-logo">Sampoorna<span style={{color:"var(--white)",fontStyle:"italic",fontWeight:300}}> Home Services</span></div>
+        <span>© 2025 · IIIT RGUKT RK Valley, Andhra Pradesh</span>
+        <span>Built with ♦ for India's urban movers</span>
+      </footer>
+      {toast && <Toast title={toast.title} msg={toast.msg} onClose={() => setToast(null)} />}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
